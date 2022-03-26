@@ -91,7 +91,7 @@ export default function ViewAllUsersComponent() {
                     <Accordion.Header onClick={()=>handleShowCohortNames(cohort.cohortName)}>{cohort.cohortName} Cohort</Accordion.Header>
                     <Accordion.Body>
                       <ListGroup>
-                        {
+                        {cohortUsers.length!=0?
                           cohortUsers.map((name, idx)=>{
                               return(
 
@@ -105,6 +105,8 @@ export default function ViewAllUsersComponent() {
                               )
 
                           })
+                          :
+                          <ListGroup.Item>This Cohort does not have any members</ListGroup.Item>
                         }
                       </ListGroup>
                     </Accordion.Body>

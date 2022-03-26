@@ -208,8 +208,10 @@ export default function EditCohortComponent() {
                   <Col>
                     <ListGroup as="ul" className="scrollFeature3">
                       {
+                        allUsers.filter((member) => member.cohortName == "Select Cohort").length>0?
                         allUsers.filter((member) => member.cohortName == "Select Cohort").map((user, idx) => {
                           return (
+
                             <ListGroup.Item 
                              action onClick={(e) => handleEditMember(e, oldCohortName)}
                               key={user.codewarsName} 
@@ -218,6 +220,8 @@ export default function EditCohortComponent() {
                               >{user.codewarsName}</ListGroup.Item>
                           )
                         })
+                        :
+                        <ListGroup.Item  className="listGroupBG pointer allText ">Empty! All users have an assigned cohort</ListGroup.Item>
                       }
                     </ListGroup>
                   </Col>
