@@ -154,11 +154,11 @@ export default function ViewAllUsersComponent() {
                                            <tr key={idx}>
                                           <td>{reservation.kataLevel} Kyu</td>
                                           <td>{reservation.kataName}</td>
-                                          <td><p className="redText">{reservation.isCompleted?"Completed":"Not Completed"}</p></td>
+                                          <td><p className="redText">Not Completed</p></td>
                                           <td>{reservation.kataLanguage}</td>
                                           <td><a className='kata-link pointer' href={reservation.kataLink} target="_blank">Open</a></td>
                                           <td>{reservation.dateAdded}</td>
-                                          <td className="d-flex justify-content-center"><Button className='allText unreserveBtn mt-1 mb-1' variant="danger" onClick={()=>handleMarkCompleted(reservation.id, reservation.codewarsName)}>Incomplete</Button></td>
+                                          <td className="d-flex justify-content-center"><Button className='allText unreserveBtn mt-1 mb-1' variant="danger" onClick={()=>handleMarkCompleted(reservation.id, reservation.codewarsName)}>Completed</Button></td>
                                           </tr>
                                         ):null
                                       )

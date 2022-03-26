@@ -6,13 +6,12 @@ import YourPastKatasComponent from "../DashboardComponents/YourPastKatasComponen
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../Hooks/use-user";
 import UserContext from "../Context/UserContext";
-import {GetCohortByCohortName, DoesUserExist, GetUserByUsername} from "../Services/DataService"
+import {GetCohortByCohortName, DoesUserExist, GetUserByUsername, GetReservationsByUsername} from "../Services/DataService"
 
 export default function DashboardPage() {
-  let { cohortName, setCohortName, storedCodewarsName, setCodewarsName } = useContext(UserContext);
+  let { cohortName, setCohortName, storedCodewarsName, setCodewarsName, setCompletedKatas, setReservedKatas } = useContext(UserContext);
   let navigate = useNavigate();
 
-  const [cohortInfo, setCohortInfo] = useState("");
   const [totalCompleted, setTotalCompleted] = useState("");
   const [lvlDifficulty, setCohortLvlDifficulty] = useState("");
 
@@ -31,6 +30,14 @@ export default function DashboardPage() {
         let userInfoFromCodewars = await DoesUserExist(storedCodewarsName);
         let totalCompleted = userInfoFromCodewars.codeChallenges.totalCompleted;
         setTotalCompleted(totalCompleted);
+        let reservations = await GetReservationsByUsername(storedCodewarsName)
+        if(reservations.length !=0)
+        {
+          let activetReservations = reservations.filter(reservation => !reservation.isDeleted && !reservation.isCompleted)
+          setReservedKatas(activetReservations)
+            let completedReservations = reservations.filter(reservation => reservation.isCompleted)
+            setCompletedKatas(completedReservations)
+        }
       }
     }
   }, []);
@@ -62,7 +69,7 @@ export default function DashboardPage() {
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link className="headerText tabBtn" eventKey="third">
-                    Your past Katas
+                    Your Completed Katas
                   </Nav.Link>
                 </Nav.Item>
               </Nav>

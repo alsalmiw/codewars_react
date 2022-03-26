@@ -3,40 +3,17 @@ import { Container, Row, Col, Form, Button, Tab, Nav, InputGroup, FormControl, T
 import UserContext from '../Context/UserContext';
 import { GetCodeChallenge, CreateReservation, GetReservationsByUsername } from '../Services/DataService';
 import { useUser } from '../Hooks/use-user';
-import { useNavigate } from 'react-router-dom';
 
 export default function ReserveAKataComponent() {
-
-    let navigate = useNavigate();
-    
-    let { codewarsName,storedCodewarsName, cohortName,  token, setReservedKatas, numberOfReservations, setNumberOfReservations } = useContext(UserContext);
-
+    let { codewarsName, reservedKatas, cohortName, setReservedKatas } = useContext(UserContext);
     const [searchedKata, setSearchedKata] = useState("");
     const [fetchedKata, setFetchedKata] = useState([]);
     const [isReserved, setIsReserved] = useState(false);
     const [fetchedKataLanguages, setFetchedKataLanguages] = useState([]);
     const [languageChosen, setLanguageChosen] = useState("");
     const [showA, setShowA] = useState(false);
+
     const toggleShowA = () => setShowA(!showA);
-
-    useEffect(async () => {
-
-        if (token == null) {
-            navigate("/");
-         }
-         else{
-            storedCodewarsName = localStorage.getItem("codewarsName")
-            if(storedCodewarsName!=null)
-            {
-                 let allUserReservations = await GetReservationsByUsername(storedCodewarsName);
-        
-        let currentReservations = allUserReservations.filter(reservation => !reservation.isDeleted && !reservation.isCompleted)
-        setNumberOfReservations(currentReservations);
-         }
-        }
-
-        
-    }, []);
 
     const handleSubmit = async () => {
         let temp = searchedKata.split("/")[4];
@@ -70,11 +47,15 @@ export default function ReserveAKataComponent() {
             setIsReserved(result);
             if (result) {
                 let allUserReservations = await GetReservationsByUsername(codewarsName);
-                setReservedKatas(allUserReservations);
+                
+              if(allUserReservations.length!=0)
+              {
                 let currentReservations = allUserReservations.filter(reservation => !reservation.isDeleted && !reservation.isCompleted)
-                setNumberOfReservations(currentReservations);
-                await setFetchedKata("");
+                setReservedKatas(currentReservations);
+                setSearchedKata('')
+                setFetchedKata("");
                 setLanguageChosen("");
+              }
             }
         }
         toggleShowA();
@@ -87,7 +68,7 @@ export default function ReserveAKataComponent() {
                 <Col className='grayCardBg mt-5 pt-4 pb-2 roundedCorners'>
                     <Row>
                         <Col md={6} id='wickedHere' className=''>
-                            {numberOfReservations.length < 3 ? 
+                            {reservedKatas.length < 3 ? 
                                 <>
                                 <Form.Label className="searchKataText headerText">Reserve Your Next Kata</Form.Label>
                                 <InputGroup className="mb-3">
@@ -95,6 +76,7 @@ export default function ReserveAKataComponent() {
                                     aria-label="Example text with button addon"
                                     aria-describedby="basic-addon1"
                                     className='searchBarBg loginForm loginFormText'
+                                    value={searchedKata}
                                     placeholder="Enter kata URL" 
                                     onChange={({ target: { value } }) => setSearchedKata(value)}
                                     />
@@ -156,7 +138,6 @@ export default function ReserveAKataComponent() {
                             : null
                         }
 
-
                         <ToastContainer position="top-end">
                             <Toast onClose={() => setShowA(false)} show={showA} delay={5000} autohide>
                             <Toast.Header>
@@ -169,9 +150,6 @@ export default function ReserveAKataComponent() {
                                 {
                                     isReserved ? "Sucessfully added ✅" : "Unable to reserve kata"
                                 }
-
-                                
-            
                                 </strong>
                                 <small>Just now</small>
                             </Toast.Header>

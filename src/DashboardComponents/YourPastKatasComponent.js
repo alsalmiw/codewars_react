@@ -1,44 +1,24 @@
-import React, {useEffect, useContext, useState} from 'react'
-import { Container, Row, Col, Form, Button, Tab, Nav, Table } from 'react-bootstrap';
+import React, {useContext} from 'react'
+import { Container, Row, Col, Form, Table } from 'react-bootstrap';
 import UserContext from '../Context/UserContext';
 import { useUser } from '../Hooks/use-user';
-import { useNavigate } from 'react-router-dom';
-import {GetReservationsByUsername, ChangeReservationStatus } from '../Services/DataService'
 
 export default function YourPastKatasComponent() {
-    let {storedCodewarsName,token,reservedKatas, setReservedKatas, numberOfReservations, setNumberOfReservations } = useContext(UserContext);
-    let navigate = useNavigate();
+    let {completedKatas} = useContext(UserContext);
 
-useEffect(async () => {
-    if (token == null) {
-       navigate("/");
-    }
-    else{
-        storedCodewarsName = localStorage.getItem("codewarsName")
-        if(storedCodewarsName!=null)
-        {
-             let reservations = await GetReservationsByUsername(storedCodewarsName)
-        if(reservations.length !=0)
-        {
-            setReservedKatas(reservations)
-        }
-    }
-    }
-}, []);
-
-const handleReserveKata= async(kata)=> {
-    let result =  await ChangeReservationStatus(kata.id)
-    if (result.length !=0)
-    {
-        let reservations = await GetReservationsByUsername(kata.codewarsName)
-        if(reservations.length !=0)
-        {
-            setReservedKatas(reservations)
-            let currentReservations = reservations.filter(reservation => !reservation.isDeleted && !reservation.isCompleted)
-            setNumberOfReservations(currentReservations);
-        }
-    }
-}
+// const handleReserveKata= async(kata)=> {
+//     let result =  await ChangeReservationStatus(kata.id)
+//     if (result.length !=0)
+//     {
+//         let reservations = await GetReservationsByUsername(kata.codewarsName)
+//         if(reservations.length !=0)
+//         {
+//             setReservedKatas(reservations)
+//             let currentReservations = reservations.filter(reservation => !reservation.isDeleted && !reservation.isCompleted)
+//             setNumberOfReservations(currentReservations);
+//         }
+//     }
+// }
 
   return (
     <>
@@ -48,7 +28,7 @@ const handleReserveKata= async(kata)=> {
                     <Row>
                         <Col md={12} className=' '>
                             <Form.Group className="mb-3" controlId="formBasicSearch">
-                                <Form.Label className="searchKataText headerText">Your Past Katas</Form.Label>
+                                <Form.Label className="searchKataText headerText">Your Completed Katas</Form.Label>
                             </Form.Group>
                             <Table striped bordered hover variant="dark">
                                 <thead>
@@ -63,10 +43,10 @@ const handleReserveKata= async(kata)=> {
                                 </thead>
                                 <tbody>
                                     {
-                                        reservedKatas.length!=0?
-                                        reservedKatas.map((kata, idx)=>{
+                                        completedKatas.length!=0?
+                                        completedKatas.map((kata, idx)=>{
                                         return(
-                                            kata.isCompleted?
+                                           
                                              <tr key={idx}>
                                     <td>{kata.kataLevel}</td>
                                     <td>{kata.kataName}</td>
@@ -86,11 +66,11 @@ const handleReserveKata= async(kata)=> {
                                         null
                                     } */}
                                     </tr>
-                                    :null
+                           
 
                                         )})
                                         :
-                                       <tr><td>You do not have any past reservations</td></tr> 
+                                       <tr><td colSpan={6}>You do not have any completed Katas</td></tr> 
                                     }
                                 </tbody>
                             </Table>

@@ -11,6 +11,9 @@ export default function UseUser() {
     const [storedCodewarsName, SetStoredCodwarsName]=useState("");
     const [numberOfReservations, setNumberOfReservations] = useState([]);
     const [allCohort, setAllCohort] = useState([]);
+    const [completedKatas, setCompletedKatas] = useState([]);
+
+    
     // setToken(localStorage.getItem('Token'));
 
 
@@ -19,5 +22,5 @@ export default function UseUser() {
         //    setToken(storageToken);
 
 
-    return { allCohort, setAllCohort, codewarsName, setCodewarsName, cohortName, storedCodewarsName, SetStoredCodwarsName, setCohortName, userId, setUserId, isAdmin, setIsAdmin, isDeleted, setIsDeleted, token, setToken, reservedKatas, setReservedKatas, numberOfReservations, setNumberOfReservations };
+    return { completedKatas, setCompletedKatas, allCohort, setAllCohort, codewarsName, setCodewarsName, cohortName, storedCodewarsName, SetStoredCodwarsName, setCohortName, userId, setUserId, isAdmin, setIsAdmin, isDeleted, setIsDeleted, token, setToken, reservedKatas, setReservedKatas, numberOfReservations, setNumberOfReservations };
 }
