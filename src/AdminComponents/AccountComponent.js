@@ -9,8 +9,8 @@ import {
   ToastContainer,
   Toast,
 } from "react-bootstrap";
-import UserContext from '../Context/UserContext';
-import { useUser } from '../Hooks/use-user';
+import UserContext from "../Context/UserContext";
+import { useUser } from "../Hooks/use-user";
 
 import {
   AddUser,
@@ -32,27 +32,25 @@ export default function AccountComponent() {
   });
   const handleSubmit = async () => {
     let result = await DoesUserExist(AddCodewarsName);
-    console.log(result)
+    console.log(result);
     if (result.success == false) {
       toggleShowA();
-
     } else {
       let userData = {
         Id: 0,
         CodewarsName: AddCodewarsName,
-        CohortName:AddCohortName,
+        CohortName: AddCohortName,
         password: AddPassword,
         isAdmin: AddIsAdmin,
       };
       let userAdded = await AddUser(userData);
-      if(userAdded)
-      {
+      if (userAdded) {
         let allCohort = await GetAllCohorts();
-      setAllCohort(allCohort);
-      setAddCodewarsName('')
-      setAddCohortName('')
-      setAddPassword('')
-      setAddIsAdmin(false)
+        setAllCohort(allCohort);
+        setAddCodewarsName("");
+        setAddCohortName("");
+        setAddPassword("");
+        setAddIsAdmin(false);
       }
     }
   };
@@ -80,6 +78,9 @@ export default function AccountComponent() {
               Create Account:
             </h3>
           </Col>
+          {/* <Col className="" sm={6}>
+            <p  className="allText roundedCorners italics" style={{color: "white"}}>Instructions: Before creating an account. Please make sure the user has an account in Codewars. The username from Codewars must match with the username that is being created.</p>
+          </Col> */}
         </Row>
 
         <Row className="justify-content-center">
@@ -97,8 +98,12 @@ export default function AccountComponent() {
                 placeholder="Codewars username"
                 onChange={({ target }) => setAddCodewarsName(target.value)}
               />
+              <Form.Text className="text-muted">
+            Please make sure the user has an account in Codewars. The username from Codewars must match with the username that is being created.
+            </Form.Text>
             </FloatingLabel>
-            <Form>
+            
+            <Form >
               <FloatingLabel
                 controlId="floatingPassword"
                 label="Enter Password"
