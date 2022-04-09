@@ -367,8 +367,14 @@ async function GetCodeChallenge(id) {
     return data;
 }
 
+async function UserCodewarsCompletedKatas(user){
+    let res = await fetch(`https://www.codewars.com/api/v1/users/${user}/code-challenges/completed?page=0`);
+    let data = await res.json();
+    return data;
+}
 
 
 
 
-export { UserLogin, GetUserByUsername, AddCohort, GetAllCohorts, GetCohortById, GetArchivedCohorts, ArchiveByCohortName, DeleteByCohortName, UpdateCohortLvlDifficulty, EditCohortName, AddCompletedKata, GetAllCompletedKatas, GetCompletedKatasByCohortId, GetCompletedKatasByCodewarsName, GetReservedKatasByKataLanguage, GetReservedKatasByCohortId, GetAllCompletedKatasByCohortId, GetAllCompletedKataReservations, GetReservationsByUsername, GetReservationById, GetAllReservations, ChangeReservationCompletedStatus,ChangeReservationStatus, CreateReservation, GetUsersByCohort, ChangeAdminStatus, EditCohortForUser, DeleteUser, AddUser, GetCodeChallenge, GetAllUsers, DoesUserExist, GetCohortByCohortName };
+
+export { UserLogin, GetUserByUsername, AddCohort, GetAllCohorts, UserCodewarsCompletedKatas, GetCohortById, GetArchivedCohorts, ArchiveByCohortName, DeleteByCohortName, UpdateCohortLvlDifficulty, EditCohortName, AddCompletedKata, GetAllCompletedKatas, GetCompletedKatasByCohortId, GetCompletedKatasByCodewarsName, GetReservedKatasByKataLanguage, GetReservedKatasByCohortId, GetAllCompletedKatasByCohortId, GetAllCompletedKataReservations, GetReservationsByUsername, GetReservationById, GetAllReservations, ChangeReservationCompletedStatus,ChangeReservationStatus, CreateReservation, GetUsersByCohort, ChangeAdminStatus, EditCohortForUser, DeleteUser, AddUser, GetCodeChallenge, GetAllUsers, DoesUserExist, GetCohortByCohortName };
