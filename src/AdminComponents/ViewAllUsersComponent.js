@@ -12,26 +12,25 @@ import {
 } from "react-bootstrap";
 import UserContext from '../Context/UserContext';
 import { useUser } from '../Hooks/use-user';
-import {GetAllCohorts, GetReservationsByUsername,GetUserByUsername, ChangeReservationCompletedStatus, GetCodeChallenge, GetUsersByCohort} from "../Services/DataService"
+import { GetAllCohorts, GetReservationsByUsername, GetUserByUsername, ChangeReservationCompletedStatus, GetCodeChallenge, GetUsersByCohort } from "../Services/DataService"
 
 export default function ViewAllUsersComponent() {
-  let {reservedKatas, setReservedKatas } = useContext(UserContext);
+  let { reservedKatas, setReservedKatas } = useContext(UserContext);
   const [cohorts, setCohorts] = useState([]);
   const [cohortUsers, setCohortUsers] = useState([]);
   const [cohortUserReservations, setCohortUserReservations] = useState([]);
   const [cohortUser, setCohortUser] = useState([]);
 
-  useEffect(async ()=>{
+  useEffect(async () => {
     let token = localStorage.getItem('Token')
-    if(token!=null)
-    {
+    if (token != null) {
       let fetchedCohorts = await GetAllCohorts()
       setCohorts(fetchedCohorts)
     }
 
-  },[]);
+  }, []);
 
-  const handleShowCohortNames =async(cohort)=>{
+  const handleShowCohortNames = async (cohort) => {
     let fetchedCohortUsers = await GetUsersByCohort(cohort)
     setCohortUsers(fetchedCohortUsers)
   }
@@ -40,148 +39,196 @@ export default function ViewAllUsersComponent() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = async (username) => {
-     setShow(true);
-     let reservations = await GetReservationsByUsername(username)
-     let user = await GetUserByUsername(username)
-      if (user !=null)
-      {
-        setCohortUser(user)
-      }
+    setShow(true);
+    let reservations = await GetReservationsByUsername(username)
+    let user = await GetUserByUsername(username)
+    if (user != null) {
+      setCohortUser(user)
+    }
 
-     if(reservations.length !=0)
-     {
+    if (reservations.length != 0) {
       setCohortUserReservations(reservations)
-     }
-     else{
+    }
+    else {
       setCohortUserReservations([])
-     }
-  }
-
-  const handleMarkCompleted = async (id, name)=> {
-    let result = await ChangeReservationCompletedStatus(id);
-    if(result)
-    {
-      let reservations = await GetReservationsByUsername(name)
-     if(reservations.length !=0)
-     {
-      setCohortUserReservations(reservations)
-     }
     }
   }
- 
-   
+
+  const handleMarkCompleted = async (id, name) => {
+    let result = await ChangeReservationCompletedStatus(id);
+    if (result) {
+      let reservations = await GetReservationsByUsername(name)
+      if (reservations.length != 0) {
+        setCohortUserReservations(reservations)
+      }
+    }
+  }
+
+
   return (
     <>
-    <Container className='grayCardBg mt-5 pt-4 pb-4 roundedCorners'>
-      <div>
-        <Row>
-          <Col sm={3}>
-            <h3 className="headerText text-end" style={{ color: "white" }}>
-              Choose Cohort to View Users
-            </h3>
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col sm={6}>
-            <Accordion>
-              {
-                cohorts.map((cohort, idx)=> {
-                  return(
-                    <Accordion.Item key={idx} eventKey={idx} className="listGroupBG">
-                    <Accordion.Header onClick={()=>handleShowCohortNames(cohort.cohortName)}>{cohort.cohortName} Cohort</Accordion.Header>
-                    <Accordion.Body>
-                      <ListGroup>
-                        {cohortUsers.length!=0?
-                          cohortUsers.map((name, idx)=>{
-                              return(
+      <Container className='grayCardBg mt-5 pt-4 pb-4 roundedCorners'>
+        <div>
+          <Row>
+            <Col sm={3}>
+              <h3 className="headerText text-end" style={{ color: "white" }}>
+                Choose Cohort to View Users
+              </h3>
+            </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col sm={6}>
 
-                                 <ListGroup.Item key={idx}
-                          action
-                          className="allUsersInCohort"
-                          onClick={()=>{handleShow(name.codewarsName)}}
-                        >
-                          {name.codewarsName}
-                        </ListGroup.Item>
-                              )
 
-                          })
-                          :
-                          <ListGroup.Item>This Cohort does not have any members</ListGroup.Item>
-                        }
-                      </ListGroup>
-                    </Accordion.Body>
-                  </Accordion.Item>
+                                {/* New Table */}
+              <Table striped bordered hover variant="dark">
+                {/* {userReservations.level == 6 ?
+                                
+                            } */}
+                <thead>
+                  <tr>
+                    <th>CodeWars Name</th>
+                    <th>Cohort Name</th>
+                    <th>Cohort Level</th>
+                    <th>Number of Reservations</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    cohortUsers.length != 0 ?
+                      (
+                        cohortUsers.map((name, idx) => {
+                          return (
 
-                  )
-                })
-              }
-              
-            </Accordion>
-          </Col>
-        </Row>
-      </div>
+                            // !reservation.isCompleted && !reservation.isDeleted ?
+                              (
+                                <tr key={idx}>
+                                  <td>{name.codewarsName}</td>
+                                  <td>{name.cohortName}</td>
+                                  {/* <td>{cohort.cohortName}</td> */}
+                                  {/* <td>{cohortUsers.kataLanguage}</td> */}
 
-      <Modal show={show} onHide={handleClose} className="editCohortColor">
-        <Modal.Header closeButton>
-          <Modal.Title>User Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+                                </tr>
+                              ) : null
+                          )
+                        })
+                      )
+                      :
+                      <tr><td colSpan={7}>This user has no reservations</td></tr>
+
+                  }
+
+
+                </tbody>
+              </Table>
+
+
+
+
+
+
+
+
+
+              <Accordion>
+                {
+                  cohorts.map((cohort, idx) => {
+                    return (
+                      <Accordion.Item key={idx} eventKey={idx} className="listGroupBG">
+                        <Accordion.Header onClick={() => handleShowCohortNames(cohort.cohortName)}>{cohort.cohortName} Cohort</Accordion.Header>
+                        <Accordion.Body>
+                          <ListGroup>
+                            {cohortUsers.length != 0 ?
+                              cohortUsers.map((name, idx) => {
+                                return (
+
+                                  <ListGroup.Item key={idx}
+                                    action
+                                    className="allUsersInCohort"
+                                    onClick={() => { handleShow(name.codewarsName) }}
+                                  >
+                                    {name.codewarsName}
+                                  </ListGroup.Item>
+                                )
+
+                              })
+                              :
+                              <ListGroup.Item>This Cohort does not have any members</ListGroup.Item>
+                            }
+                          </ListGroup>
+                        </Accordion.Body>
+                      </Accordion.Item>
+
+                    )
+                  })
+                }
+
+              </Accordion>
+            </Col>
+          </Row>
+        </div>
+
+        <Modal show={show} onHide={handleClose} className="editCohortColor">
+          <Modal.Header closeButton>
+            <Modal.Title>User Info</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <h3>CodeWars Name: {cohortUser.codewarsName}</h3>
             <h3>Cohort: {cohortUser.cohortName}</h3>
 
             <Table striped bordered hover variant="dark">
-                                {/* {userReservations.level == 6 ?
+              {/* {userReservations.level == 6 ?
                                 
                             } */}
-                                <thead>
-                                    <tr>
-                                    <th>Level</th>
-                                    <th>Kata name</th>
-                                    <th>Status</th>
-                                    <th>Language</th>
-                                    <th>Link</th>
-                                    <th>Date Reserved</th>
-                                    <th>Mark Completed</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  {
-                                    cohortUserReservations.length!=0?
-                                    (
-                                    cohortUserReservations.map((reservation,idx)=>{
-                                      return(
-                                       
-                                        !reservation.isCompleted && !reservation.isDeleted?
-                                        (
-                                           <tr key={idx}>
-                                          <td>{reservation.kataLevel} Kyu</td>
-                                          <td>{reservation.kataName}</td>
-                                          <td><p className="redText">Not Completed</p></td>
-                                          <td>{reservation.kataLanguage}</td>
-                                          <td><a className='kata-link pointer' href={reservation.kataLink} target="_blank">Open</a></td>
-                                          <td>{reservation.dateAdded}</td>
-                                          <td className="d-flex justify-content-center"><Button className='allText unreserveBtn mt-1 mb-1' variant="danger" onClick={()=>handleMarkCompleted(reservation.id, reservation.codewarsName)}>Completed</Button></td>
-                                          </tr>
-                                        ):null
-                                      )
-                                    })
-                                    )
-                                    :
-                                   <tr><td colSpan={7}>This user has no reservations</td></tr>
-                                  
-                                  }
-                                   
-                                   
-                                </tbody>
-                            </Table>
-          
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+              <thead>
+                <tr>
+                  <th>Level</th>
+                  <th>Kata name</th>
+                  <th>Status</th>
+                  <th>Language</th>
+                  <th>Link</th>
+                  <th>Date Reserved</th>
+                  <th>Mark Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  cohortUserReservations.length != 0 ?
+                    (
+                      cohortUserReservations.map((reservation, idx) => {
+                        return (
+
+                          !reservation.isCompleted && !reservation.isDeleted ?
+                            (
+                              <tr key={idx}>
+                                <td>{reservation.kataLevel} Kyu</td>
+                                <td>{reservation.kataName}</td>
+                                <td><p className="redText">Not Completed</p></td>
+                                <td>{reservation.kataLanguage}</td>
+                                <td><a className='kata-link pointer' href={reservation.kataLink} target="_blank">Open</a></td>
+                                <td>{reservation.dateAdded}</td>
+                                <td className="d-flex justify-content-center"><Button className='allText unreserveBtn mt-1 mb-1' variant="danger" onClick={() => handleMarkCompleted(reservation.id, reservation.codewarsName)}>Completed</Button></td>
+                              </tr>
+                            ) : null
+                        )
+                      })
+                    )
+                    :
+                    <tr><td colSpan={7}>This user has no reservations</td></tr>
+
+                }
+
+
+              </tbody>
+            </Table>
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </>
   );
