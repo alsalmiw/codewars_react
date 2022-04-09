@@ -367,8 +367,8 @@ async function GetCodeChallenge(id) {
     return data;
 }
 
-async function UserCodewarsCompletedKatas(user){
-    let res = await fetch(`https://www.codewars.com/api/v1/users/${user}/code-challenges/completed?page=0`);
+async function UserCodewarsCompletedKatas(user, num){
+    let res = await fetch(`https://www.codewars.com/api/v1/users/${user}/code-challenges/completed?page=${num}`);
     let data = await res.json();
     return data;
 }

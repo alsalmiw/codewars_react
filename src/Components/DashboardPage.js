@@ -9,10 +9,10 @@ import UserContext from "../Context/UserContext";
 import {GetCohortByCohortName, DoesUserExist, GetUserByUsername, GetReservationsByUsername} from "../Services/DataService"
 
 export default function DashboardPage() {
-  let { cohortName, setCohortName, storedCodewarsName, setCodewarsName, setCompletedKatas, setReservedKatas } = useContext(UserContext);
+  let { cohortName, setCohortName, storedCodewarsName, setCodewarsName, setCompletedKatas, setReservedKatas, totalCompleted, setTotalCompleted } = useContext(UserContext);
   let navigate = useNavigate();
 
-  const [totalCompleted, setTotalCompleted] = useState("");
+  //const [totalCompleted, setTotalCompleted] = useState("");
   const [lvlDifficulty, setCohortLvlDifficulty] = useState("");
 
   useEffect(async () => {

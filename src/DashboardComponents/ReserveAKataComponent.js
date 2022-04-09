@@ -5,7 +5,7 @@ import { GetCodeChallenge, CreateReservation, GetReservationsByUsername, UserCod
 import { useUser } from '../Hooks/use-user';
 
 export default function ReserveAKataComponent() {
-    let { codewarsName, reservedKatas, cohortName, setReservedKatas } = useContext(UserContext);
+    let { codewarsName, reservedKatas, cohortName, setReservedKatas, totalCompleted } = useContext(UserContext);
     const [searchedKata, setSearchedKata] = useState("");
     const [fetchedKata, setFetchedKata] = useState([]);
     const [isReserved, setIsReserved] = useState(false);
@@ -24,17 +24,23 @@ export default function ReserveAKataComponent() {
 
     const isKataCompletedAtCodewars = async(id, language)=> {
         let result = false;
-        let userCodewarsComplete = await UserCodewarsCompletedKatas(codewarsName)
-        let foundCompletedKata = userCodewarsComplete.data.filter(kata => kata.id==id)
-        if(foundCompletedKata.length!=0)
-        {
-            let foundCompletedLanguage = foundCompletedKata[0].completedLanguages.filter(lang => lang==language)
-            foundCompletedLanguage.length!=0?result= true: result=false;
+        let pages = totalCompleted/200<1?0: Math.floor(totalCompleted/200);
+        let foundCompletedKata;
+        for (let i=0; i<=pages; i++) {
+            let userCodewarsComplete = await UserCodewarsCompletedKatas(codewarsName, i)
+            foundCompletedKata = userCodewarsComplete.data.filter(kata => kata.id==id)
+            if(foundCompletedKata.length!=0){
+                let foundCompletedLanguage = foundCompletedKata[0].completedLanguages.filter(lang => lang==language)
+                if(foundCompletedLanguage.length!=0){
+                    result= true 
+                    i=pages
+                }
+            }
+            else{
+                result=false
+            }
         }
-        else{
-            result=false
-        }
-        return result;
+       return result;
     }
 
     const handleReserve = async (fetchedKata) => {
