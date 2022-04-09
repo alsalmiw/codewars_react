@@ -17,6 +17,7 @@ const AdminPage = () => {
     let token = localStorage.getItem('Token')
     if (token == null) {
        navigate("/");
+       //dsjhfg
     }
     else{
        storedCodewarsName = localStorage.getItem("codewarsName")
