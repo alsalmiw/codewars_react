@@ -3,6 +3,7 @@ import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import UseUser from '../Hooks/use-user'
 import UserContext from '../Context/UserContext';
+import Logo from '../Image/codestackedit.JPG';
 
 const NavbarComponent = () => {
 
@@ -27,7 +28,7 @@ const NavbarComponent = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container fluid className='ms-5 me-5' >
-                <img className="navImg img-fluid" src="https://www.codewars.com/packs/assets/logo.61192cf7.svg" />
+                <img className="navImg img-fluid" src={Logo} />
                 <Navbar.Brand className='headerText' as={Link} to="/">Codewars Reservations</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

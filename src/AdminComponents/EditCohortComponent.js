@@ -94,7 +94,7 @@ export default function EditCohortComponent() {
           <Row>
             <Col sm={3}>
               <h3 className="headerText text-end" style={{ color: "white" }}>
-                Edit Cohorts
+                Choose Cohort to Edit
               </h3>
             </Col>
           </Row>
