@@ -102,7 +102,7 @@
 }
 
 .marginTop {
-  margin-top: 25%;
+  margin-top: 10%;
 }
 
 .tabBg {
@@ -120,9 +120,10 @@
 .tabBtn1 {
   background-color: #27272A !important;
   border-radius: 0.1px;
-  border: 2px solid #3F3F45 !important;
+  /* border: 2px solid #3F3F45 !important; */
   color: #DFDFDF !important;
   font-size: 18px;
+  margin-left: 15px !important;
 }
 
 .tabBtn:hover {
