@@ -48,7 +48,8 @@ export default function DashboardPage() {
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
           <Row> 
             <Col sm={3} className="tabBg">
-              <div className="tabBtn1 mt-5">
+              <img className="badgeImg mt-3" src={`https://www.codewars.com/users/${storedCodewarsName}/badges/large`} />
+              <div className="tabBtn1 mt-3">
                 <p className="headerText1">Cohort Name: {cohortName}</p>
                 <p className="headerText1">Cohort Level: {lvlDifficulty} kyu and lower</p>
                 <p className="headerText1">Total Katas Completed: {totalCompleted}</p>
