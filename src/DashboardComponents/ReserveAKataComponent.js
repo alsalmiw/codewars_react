@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect } from 'react'
 import { Container, Row, Col, Form, Button, Tab, Nav, InputGroup, FormControl, Toast, ToastContainer } from 'react-bootstrap';
 import UserContext from '../Context/UserContext';
-import { GetCodeChallenge, CreateReservation, GetReservationsByUsername } from '../Services/DataService';
+import { GetCodeChallenge, CreateReservation, GetReservationsByUsername, UserCodewarsCompletedKatas } from '../Services/DataService';
 import { useUser } from '../Hooks/use-user';
 
 export default function ReserveAKataComponent() {
@@ -22,6 +22,21 @@ export default function ReserveAKataComponent() {
         setFetchedKataLanguages(result.languages);
     }
 
+    const isKataCompletedAtCodewars = async(id, language)=> {
+        let result = false;
+        let userCodewarsComplete = await UserCodewarsCompletedKatas(codewarsName)
+        let foundCompletedKata = userCodewarsComplete.data.filter(kata => kata.id==id)
+        if(foundCompletedKata.length!=0)
+        {
+            let foundCompletedLanguage = foundCompletedKata[0].completedLanguages.filter(lang => lang==language)
+            foundCompletedLanguage.length!=0?result= true: result=false;
+        }
+        else{
+            result=false
+        }
+        return result;
+    }
+
     const handleReserve = async (fetchedKata) => {
 
         if(languageChosen == "")
@@ -29,7 +44,11 @@ export default function ReserveAKataComponent() {
             setIsReserved(false);
             toggleShowA();
         }else{
-            let newReservation = {
+
+           let isCompleted =  await isKataCompletedAtCodewars(fetchedKata.id, languageChosen)
+            if(!isCompleted)
+            {
+                let newReservation = {
                 id: 0,  
                 kataId: fetchedKata.id,
                 codewarsName: codewarsName,
@@ -57,6 +76,8 @@ export default function ReserveAKataComponent() {
                 setLanguageChosen("");
               }
             }
+            }
+           
         }
         toggleShowA();
     }
