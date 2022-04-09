@@ -77,11 +77,11 @@ export default function YourCurrentKatasComponent() {
                                         <tr><td colSpan={6}>You do not have any reservations</td></tr>
                                     }
                                   
-                                   
+
                                 </tbody>
                             </Table>
                         </Col>
-                        <Col md={12} className='mt-4'>
+                        <Col md={12} className='mt-2'>
                             {
                                 showKata?
                                 <>

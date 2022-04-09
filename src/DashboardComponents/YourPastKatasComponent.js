@@ -30,7 +30,7 @@ export default function YourPastKatasComponent() {
                             <Form.Group className="mb-3" controlId="formBasicSearch">
                                 <Form.Label className="searchKataText headerText">Your Completed Katas</Form.Label>
                             </Form.Group>
-                            <Table striped bordered hover variant="dark">
+                            <Table striped bordered hover variant="dark" className="mb-2">
                                 <thead>
                                     <tr>
                                     <th>Level</th>
