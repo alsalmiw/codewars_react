@@ -88,7 +88,7 @@ export default function ViewAllUsersComponent() {
                 cohorts.map((cohort, idx)=> {
                   return(
                     <Accordion.Item key={idx} eventKey={idx} className="listGroupBG">
-                    <Accordion.Header onClick={()=>handleShowCohortNames(cohort.cohortName)}>{cohort.cohortName} Cohort</Accordion.Header>
+                    <Accordion.Header action onClick={()=>handleShowCohortNames(cohort.cohortName)}>{cohort.cohortName} Cohort</Accordion.Header>
                     <Accordion.Body>
                       <ListGroup>
                         {cohortUsers.length!=0?
@@ -103,10 +103,9 @@ export default function ViewAllUsersComponent() {
                           {name.codewarsName}
                         </ListGroup.Item>
                               )
-
                           })
                           :
-                          <ListGroup.Item>This Cohort does not have any members</ListGroup.Item>
+                          <ListGroup.Item className="allUsersInCohort">This Cohort does not have any members</ListGroup.Item>
                         }
                       </ListGroup>
                     </Accordion.Body>

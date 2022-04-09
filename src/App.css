@@ -226,3 +226,11 @@ a{
 .badgeImg{
   width: 100%;
 }
+
+.list-group-item-action:hover{
+  background-color: #3F3F45  !important;
+}
+
+.accordion-button:hover{
+  background-color: #3F3F45  !important;
+}
