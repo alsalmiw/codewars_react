@@ -29,6 +29,8 @@ export default function ReserveAKataComponent() {
             setIsReserved(false);
             toggleShowA();
         }else{
+            
+
             let newReservation = {
                 id: 0,  
                 kataId: fetchedKata.id,
