@@ -104,6 +104,9 @@ export default function CreateCohortComponent() {
               <option value="2">2 Kyu Kata</option>
               <option value="1">1 Kyu Kata</option>
             </Form.Select>
+            <Form.Text className="text-muted">
+              Cohort's kata level will allow users to choose the chosen kata's level and below. For example, If the cohort's level is a 5 Kyu Kata, users will be able to choose katas that are level 1-5.
+            </Form.Text>
           </Col>
         </Row>
         {/* <Row className="justify-content-center">
