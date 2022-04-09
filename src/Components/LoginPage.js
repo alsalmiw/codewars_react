@@ -67,7 +67,7 @@ const LoginPage = () => {
                     <Col sm={3} className='grayCardBg mt-5 pt-4'>
                         <Row className='justify-content-center'>
                             <Col className='mb-5'>
-                                <img className="center" src="https://www.codewars.com/packs/assets/logo-square-red-big.c74ae0e7.png" />
+                                <img className="center" src="https://codestackacademy.org/assets/images/All%20White.svg" />
                             </Col>
                         </Row>
                         <Form onSubmit={handleSubmit}>
